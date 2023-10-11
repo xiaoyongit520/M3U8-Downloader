@@ -208,24 +208,24 @@ function version2float(v) {
   return 0;
 }
 
-async function checkUpdate() {
-  //const { body } =await got("https://raw.githubusercontent.com/HeiSir2014/M3U8-Downloader/master/package.json").catch(logger.error);
-
-  const { body } = await got("https://tools.heisir.cn/HLSDownload/package.json").catch(logger.error);
-  if (body != '') {
-    try {
-      let _package = JSON.parse(body);
-      if (version2float(_package.version) > version2float(package_self.version)) {
-        if (dialog.showMessageBoxSync(mainWindow, { type: 'question', buttons: ["Yes", "No"], message: `检测到新版本(${_package.version})，是否要打开升级页面，下载最新版` }) == 0) {
-          shell.openExternal("https://tools.heisir.cn/HLSDownload/download.html");
-          return;
-        }
-      }
-    } catch (error) {
-      logger.error(error);
-    }
-  }
-}
+// async function checkUpdate() {
+//   //const { body } =await got("https://raw.githubusercontent.com/HeiSir2014/M3U8-Downloader/master/package.json").catch(logger.error);
+//
+//   const { body } = await got("https://tools.heisir.cn/HLSDownload/package.json").catch(logger.error);
+//   if (body != '') {
+//     try {
+//       let _package = JSON.parse(body);
+//       if (version2float(_package.version) > version2float(package_self.version)) {
+//         if (dialog.showMessageBoxSync(mainWindow, { type: 'question', buttons: ["Yes", "No"], message: `检测到新版本(${_package.version})，是否要打开升级页面，下载最新版` }) == 0) {
+//           shell.openExternal("https://tools.heisir.cn/HLSDownload/download.html");
+//           return;
+//         }
+//       }
+//     } catch (error) {
+//       logger.error(error);
+//     }
+//   }
+// }
 app.on('ready', () => {
 
   createWindow();
@@ -295,33 +295,33 @@ app.on('ready', () => {
   } : null;
 
   //百度统计代码
-  (async () => {
-    try {
-      checkUpdate();
-
-      setInterval(checkUpdate, 600000);
-
-      let HMACCOUNT = nconf.get('HMACCOUNT');
-      if (!HMACCOUNT) HMACCOUNT = '';
-      const { headers } = await got("http://hm.baidu.com/hm.js?300991eff395036b1ba22ae155143ff3", { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
-      try {
-        HMACCOUNT = headers['set-cookie'] && headers['set-cookie'][0].match(/HMACCOUNT=(.*?);/i)[1];
-        if (HMACCOUNT) {
-          nconf.set('HMACCOUNT', HMACCOUNT);
-          nconf.save();
-        }
-      } catch (error_) {
-        logger.error(error_)
-      }
-      logger.info(HMACCOUNT);
-      await got(`http://hm.baidu.com/hm.gif?hca=${HMACCOUNT}&cc=1&ck=1&cl=24-bit&ds=1920x1080&vl=977&ep=6621%2C1598&et=3&ja=0&ln=zh-cn&lo=0&lt=${(new Date().getTime() / 1000)}&rnd=0&si=300991eff395036b1ba22ae155143ff3&v=1.2.74&lv=3&sn=0&r=0&ww=1920&u=${encodeURIComponent(referer)}`, { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
-      await got(`http://hm.baidu.com/hm.gif?cc=1&ck=1&cl=24-bit&ds=1920x1080&vl=977&et=0&ja=0&ln=zh-cn&lo=0&rnd=0&si=300991eff395036b1ba22ae155143ff3&v=1.2.74&lv=1&sn=0&r=0&ww=1920&ct=!!&tt=M3U8Soft-Client`, { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
-
-      logger.info("call baidu-tong-ji end.");
-    } catch (error) {
-      logger.error(error)
-    }
-  })();
+  // (async () => {
+  //   try {
+  //     checkUpdate();
+  //
+  //     setInterval(checkUpdate, 600000);
+  //
+  //     let HMACCOUNT = nconf.get('HMACCOUNT');
+  //     if (!HMACCOUNT) HMACCOUNT = '';
+  //     const { headers } = await got("http://hm.baidu.com/hm.js?300991eff395036b1ba22ae155143ff3", { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
+  //     try {
+  //       HMACCOUNT = headers['set-cookie'] && headers['set-cookie'][0].match(/HMACCOUNT=(.*?);/i)[1];
+  //       if (HMACCOUNT) {
+  //         nconf.set('HMACCOUNT', HMACCOUNT);
+  //         nconf.save();
+  //       }
+  //     } catch (error_) {
+  //       logger.error(error_)
+  //     }
+  //     logger.info(HMACCOUNT);
+  //     await got(`http://hm.baidu.com/hm.gif?hca=${HMACCOUNT}&cc=1&ck=1&cl=24-bit&ds=1920x1080&vl=977&ep=6621%2C1598&et=3&ja=0&ln=zh-cn&lo=0&lt=${(new Date().getTime() / 1000)}&rnd=0&si=300991eff395036b1ba22ae155143ff3&v=1.2.74&lv=3&sn=0&r=0&ww=1920&u=${encodeURIComponent(referer)}`, { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
+  //     await got(`http://hm.baidu.com/hm.gif?cc=1&ck=1&cl=24-bit&ds=1920x1080&vl=977&et=0&ja=0&ln=zh-cn&lo=0&rnd=0&si=300991eff395036b1ba22ae155143ff3&v=1.2.74&lv=1&sn=0&r=0&ww=1920&ct=!!&tt=M3U8Soft-Client`, { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
+  //
+  //     logger.info("call baidu-tong-ji end.");
+  //   } catch (error) {
+  //     logger.error(error)
+  //   }
+  // })();
   return;
 
   const EMPTY_STRING = '';
@@ -398,8 +398,8 @@ function downloadComplete(e) {
 app.on('window-all-closed', async () => {
 
   console.log('window-all-closed')
-  let HMACCOUNT = nconf.get('HMACCOUNT');
-  HMACCOUNT && await got(`http://hm.baidu.com/hm.gif?cc=1&ck=1&cl=24-bit&ds=1920x1080&vl=977&et=0&ja=0&ln=zh-cn&lo=0&rnd=0&si=300991eff395036b1ba22ae155143ff3&v=1.2.74&lv=1&sn=0&r=0&ww=1920&ct=!!&tt=M3U8Soft-Client`, { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
+  // let HMACCOUNT = nconf.get('HMACCOUNT');
+  // HMACCOUNT && await got(`http://hm.baidu.com/hm.gif?cc=1&ck=1&cl=24-bit&ds=1920x1080&vl=977&et=0&ja=0&ln=zh-cn&lo=0&rnd=0&si=300991eff395036b1ba22ae155143ff3&v=1.2.74&lv=1&sn=0&r=0&ww=1920&ct=!!&tt=M3U8Soft-Client`, { headers: { "Referer": referer, "Cookie": "HMACCOUNT=" + HMACCOUNT } });
 
   // 在 macOS 上，除非用户用 Cmd + Q 确定地退出，
   // 否则绝大部分应用及其菜单栏会保持激活。
@@ -467,6 +467,10 @@ ipcMain.on('task-add', async function (event, object) {
       let ___ = _.match(/(.*?): ?(.*?)(\n|\r|$)/i);
       ___ && (_headers[___[1]] = ___[2]);
     });
+  }
+
+  if (object.generateFile) {
+    fs.writeFileSync(object.url.replace('file:///', ''), object.fileData);
   }
 
   let mes = hlsSrc.match(/^https?:\/\/[^/]*/);
@@ -555,7 +559,7 @@ ipcMain.on('task-add-muti', async function (event, object) {
   let code = -1;
   let iidx = 0;
   m3u8_urls.split(/\r|\n/g).forEach(urls => {
-    if (urls != '') {
+    if (urls !== '') {
       let _obj = {
         url: '',
         headers: object.headers,
